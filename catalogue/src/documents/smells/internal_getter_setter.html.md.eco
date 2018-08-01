@@ -1,0 +1,34 @@
+---
+title: "Internal Getter/Setter"
+short: igs
+layout: "smell"
+affects:
+    - Efficiency
+context:
+    - Implementation
+refactorings:
+    - direct_field_access
+tags:
+    - idiom
+    - efficiency
+---
+
+## Context
+
+<%= @document.context %>
+
+## Affects
+
+<%= @document.affects %>
+
+## Problem
+
+Internal fields are accessed via getters and setters.
+
+But in Android virtual method are expensive.
+
+## Refactorings
+
+<% for refactoring in @getRefactorings(): %>
+<%- @include(refactoring) %>
+<% end %>

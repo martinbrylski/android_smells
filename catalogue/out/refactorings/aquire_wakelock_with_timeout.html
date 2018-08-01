@@ -1,0 +1,30 @@
+<h3>Aquire WakeLock with timeout</h3>
+
+<h4>Resolves</h4>
+
+<p>Energy Efficiency</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p>To ensure that the WakeLock will be released in all circumstances one can use the method <code>PowerManager.WakeLock.aquire(long timeout)</code>.</p>
+
+<pre><code>PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
+
+PowerManager.WakeLock wl = pm.newWakeLock(
+  PowerManager.SCREEN_DIM_WAKE_LOCK
+  | PowerManager.ON_AFTER_RELEASE,
+  TAG);
+
+wl.acquire(60*1000*10); // auto release it in 10 minutes
+// ... do work...
+wl.release();
+</code></pre>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="http://www.apress.com/9781430239994">Pro Android Apps Efficiency Optimization</a></li>
+<li><a href="http://developer.android.com/reference/android/os/PowerManager.WakeLock.html">Developer Documentation</a></li>
+</ul>

@@ -1,0 +1,57 @@
+<h3>View Holder</h3>
+
+<h4>Resolves</h4>
+
+<p>Efficiency</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p>To make <em>ListViews</em> or any view holding views (like <em>ViewPager</em>) more smooth:</p>
+
+<p>You have to create a class <code>ViewHolder</code> that holds all fields of the view:</p>
+
+<pre><code>static class ViewHolder {
+  TextView text;
+  TextView timestamp;
+  ImageView icon;
+  ProgressBar progress;
+  int position;
+}
+</code></pre>
+
+<p>Then the <em>Adapter</em> is fixed:</p>
+
+<pre><code>class MyAdapter extends ArrayAdapter {
+    ...
+    @Override
+    public View getView(int position, View v, ViewGroup parent) {
+        ViewHolder viewHolder;
+        if (v == null) {
+            LayoutInflater li = (LayoutInflater) getContext().getSystemService(
+                    Context.LAYOUT_INFLATER_SERVICE);
+            v = li.inflate(R.layout.objectData, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.txText = (TextView) v.findViewById(R.id.vText);
+            viewHolder.txTimestamp = (TextView) v.findViewById(R.id.vTimestamp);
+            viewHolder.txIcon = (TextView) v.findViewById(R.id.vIcon);
+            viewHolder.txProgress = (TextView) v.findViewById(R.id.vProgress);
+            viewHolder.txPosition = (TextView) v.findViewById(R.id.vPosition);
+            v.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) v.getTag();
+        }
+        // access fields and populate with data
+        viewHolder.txtText(...)
+        return v;
+    }
+}
+</code></pre>
+
+<h3>Links</h3>
+
+<ul>
+<li><a href="http://www.youtube.com/watch?v=wDBM6wVEO70">Google I/O 2010 - The world of ListView</a></li>
+<li><a href="http://developer.android.com/training/improving-layouts/smooth-scrolling.html">Making ListViews Scrolling Smooth (08.09.2013)</a></li>
+</ul>

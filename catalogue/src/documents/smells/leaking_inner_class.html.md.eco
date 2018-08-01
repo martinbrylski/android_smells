@@ -1,0 +1,66 @@
+---
+title: "Leaking Inner Class"
+short: lic
+layout: "smell"
+affects:
+    - Memory Efficiency
+context:
+    - Implementation
+refactorings:
+    - introduce_static_class
+    - introduce_weakreference
+tags:
+    - view
+    - memory
+    - class
+    - leak
+---
+
+## Context
+
+<%= @document.context %>
+
+## Affects
+
+<%= @document.affects %>
+
+## Problem
+
+Non-static inner classes holds a reference to the outer class. This could lead to a memory leak.
+
+Here are two examples: One inner class and one anonymous inner class.
+
+```
+public class SampleActivity extends Activity {
+
+    private final Handler mLeakyHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            // ...
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Post a message and delay its execution for 10 minutes.
+        mLeakyHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // do anything
+            }
+        }, 60 * 10 * 1000);
+
+        // Go back to the previous Activity.
+        finish();
+    }
+}
+```
+
+## Refactorings
+
+<% for refactoring in @getRefactorings(): %>
+<%- @include(refactoring) %>
+<% end %>
+

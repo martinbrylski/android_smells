@@ -1,0 +1,42 @@
+<h3>Add Data Compression to Apache HTTP Client based file transmission</h3>
+
+<h4>Resolves</h4>
+
+<p>Energy Efficiency</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p>Compress the File object before transmitting it.</p>
+
+<pre><code>    public static void main(String[] args) throws Exception {
+        // ...
+        // the passed File object now is compressed
+        FileBody bin = new FileBody(gzipFile(file)) ;
+        // ...
+    }
+    private static File gzipFile(File uncompressedFile){
+        try {
+            assert uncompressedFile != null &amp;&amp; uncompressedFile.exists();
+            File gzippedFile = File.createTempFile(uncompressedFile.getName(), &quot;gz&quot;);
+            FileInputStream fis = new FileInputStream(uncompressedFile);
+            GZIPOutputStream out = new GZIPOutputStream(new FileOutputStream(gzippedFile));
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1){
+                out.write(buffer,0, bytesRead);
+            }
+            fis.close();
+            out.close();
+            return gzippedFile;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+</code></pre>
+
+<h4>Links</h4>

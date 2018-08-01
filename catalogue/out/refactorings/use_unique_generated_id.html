@@ -1,0 +1,30 @@
+<h3>Use unique generated Id</h3>
+
+<h4>Resolves</h4>
+
+<p>Security,User Conformity</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p>The goal of the problem is to identify one concrete installation instead of a concrete hardware.</p>
+
+<p><code>Settings.Secure.ANDROID_ID</code> is a 64-bit hex string that is generated when the device is booted the first time. It is set when the device is wiped.</p>
+
+<p>The downside of this is is the fact that it is not 1005 reliable in Android Versions before Froyo (2.2). In <a href="http://android-developers.blogspot.de/2011/03/identifying-app-installations.html">Identifying App Installations</a> it is said there is at least one known manufacturer bug that returns the same id on every device.</p>
+
+<p>To target also older versions a legacy fallback method could be implemented that generates and stores a unique id at the first run of the app, eg. with the help of:</p>
+
+<pre><code>UUID.randomUUID().toString();
+</code></pre>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="http://android-developers.blogspot.de/2011/03/identifying-app-installations.html">Identifying App Installations</a></li>
+<li><a href="http://developer.android.com/reference/android/telephony/TelephonyManager.html#getDeviceId()">TelephonyManager.getDeviceId()</a></li>
+<li><a href="http://developer.android.com/reference/android/Manifest.permission.html#READ_PHONE_STATE">Permission | READ_PHONE_STATE</a></li>
+<li><a href="http://developer.android.com/reference/android/provider/Settings.Secure.html#ANDROID_ID">Settings.Secure.ANDROID_ID</a></li>
+<li><a href="http://developer.android.com/reference/java/util/UUID.html">UUID</a></li>
+</ul>

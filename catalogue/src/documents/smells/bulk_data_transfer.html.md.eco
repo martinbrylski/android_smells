@@ -1,0 +1,45 @@
+---
+title: "Bulk data transfer on slow network"
+short: bdtosn
+layout: "smell"
+affects:
+    - Energy Efficiency
+    - User Conformity
+context:
+    - Network
+refactorings:
+    - check_network_connection
+tags:
+    - energy
+    - user conformity
+    - network
+---
+
+## Context
+
+<%= @document.context %>
+
+## Affects
+
+<%= @document.affects %>
+
+## Problem
+
+Transferring data over a slower network connection will consume much more power then over a fast connection.
+
+<dl class="dl-horizontal">
+    <dt>EDGE (90kbps):</dt>
+    <dd>300mA * 9.1 min = 44 mAh</dd>
+    <dt>3G (300kbps):</dt>
+    <dd>210mA * 2.7 min = 9.5 mAh</dd>
+    <dt>WiFi (1Mbps):</dt>
+    <dd>330mA * 48 sec = 4.4 mAh</dd>
+</dl>
+
+See: [Coding for Life -- Battery Life, That is](http://www.google.com/events/io/2009/sessions/CodingLifeBatteryLife.html)
+
+## Refactorings
+
+<% for refactoring in @getRefactorings(): %>
+<%- @include(refactoring) %>
+<% end %>

@@ -1,0 +1,33 @@
+---
+title: "Untouchable"
+short: u
+layout: "smell"
+affects:
+    - User Experience
+    - Accessibility
+context:
+    - UI
+tags:
+    - accessibility
+    - user experience
+---
+
+## Context
+
+<%= @document.context %>
+
+## Affects
+
+<%= @document.affects %>
+
+## Problem
+
+If a touchable ui elements size is less then 48dp (ca. 9mm).
+
+See [Accessibility: Are You Serving All Your Users?](http://android-developers.blogspot.de/2012/04/accessibility-are-you-serving-all-your.html)
+
+## Refactorings
+
+<% for refactoring in @getRefactorings(): %>
+<%- @include(refactoring) %>
+<% end %>

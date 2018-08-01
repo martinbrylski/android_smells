@@ -1,0 +1,209 @@
+<html>
+<head>
+    <title>Data Transmission Without Compression | Android Smells Catalogue</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Martin Brylski">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="generator" content="DocPad v6.54.0" />
+    <!--[if IE 7 ]>
+    <link rel="stylesheet" href="css/ink-ie7.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <![endif]-->
+    <link  rel="stylesheet" href="../css/bootstrap.min.css" /><link  rel="stylesheet" href="../css/style.css" /><link  rel="stylesheet" href="../css/highlight.css" /></head>
+<body class="smell">
+
+    <div id="wrap">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                  <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../index.html">Android Smells</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        
+                        <li class="inactive">
+                            <a href="../index.html">Catalogue</a>
+                        </li>
+                        
+                        <li class="inactive">
+                            <a href="../about.html">About</a>
+                        </li>
+                        
+                    </ul>
+
+                    <form class="navbar-form navbar-right" role="search" method="get" action="../search.html">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search" name="keys">
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+
+
+        <div class="container">
+            <h1 class="capitalize">Data Transmission Without Compression</h1>
+
+            <h2>Context</h2>
+
+<p>Implementation,Network</p>
+
+<h2>Affects</h2>
+
+<p>Energy Efficiency</p>
+
+<h2>Problem</h2>
+
+<p>Höpfner and Bunse discussed in their publication &ldquo;Towards an energy-consumption based complexity classification for resource substitution strategies&rdquo;<br/>
+that transmitting a file over a network infrastructure without compressing it consumes more energy.<br/>
+More precisely, Energy Efficiency<br/>
+ is improved in case the data is compressed at least by 10%, transmitted and decompressed at the other network node.</p>
+
+<p>The following example show file transmission implemented with the <a href="http://archive.apache.org/dist/httpcomponents/httpclient/binary/httpcomponents-client-4.2.4-bin.zip">Apache HTTP Client Library</a> (the example is taken from ClientMultipartFormPost.java).</p>
+
+<pre><code>public static void main(String[] args) throws Exception {
+    if (args.length != 1)  {
+        System.out.println(&quot;File path not given&quot;);
+        System.exit(1);
+    }
+    HttpClient httpclient = new DefaultHttpClient();
+    try {
+
+        HttpPost httppost = new HttpPost(&quot;http://some.url:8080/servlets-examples/servlet/RequestInfoExample&quot;);
+        // the passed File object in this constructor is transmitted without compression
+        FileBody bin = new FileBody(new File(args[0]));
+        StringBody comment = new StringBody(&quot;A binary file of some kind&quot;);
+
+        MultipartEntity reqEntity = new MultipartEntity();
+        reqEntity.addPart(&quot;bin&quot;, bin);
+        reqEntity.addPart(&quot;comment&quot;, comment);
+
+        httppost.setEntity(reqEntity);
+
+        System.out.println(&quot;executing request &quot; + httppost.getRequestLine());
+        HttpResponse response = httpclient.execute(httppost);
+        HttpEntity resEntity = response.getEntity();
+
+        System.out.println(&quot;----------------------------------------&quot;);
+        System.out.println(response.getStatusLine());
+        if (resEntity != null) {
+            System.out.println(&quot;Response content length: &quot; + resEntity.getContentLength());
+        }
+        EntityUtils.consume(resEntity);
+    } finally {
+        try { httpclient.getConnectionManager().shutdown(); } catch (Exception ignore) {}
+    }
+
+}
+</code></pre>
+
+<h2>Refactorings</h2>
+
+<h3>Add Data Compression to Apache HTTP Client based file transmission</h3>
+
+<h4>Resolves</h4>
+
+<p>Energy Efficiency</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p>Compress the File object before transmitting it.</p>
+
+<pre><code>    public static void main(String[] args) throws Exception {
+        // ...
+        // the passed File object now is compressed
+        FileBody bin = new FileBody(gzipFile(file)) ;
+        // ...
+    }
+    private static File gzipFile(File uncompressedFile){
+        try {
+            assert uncompressedFile != null &amp;&amp; uncompressedFile.exists();
+            File gzippedFile = File.createTempFile(uncompressedFile.getName(), &quot;gz&quot;);
+            FileInputStream fis = new FileInputStream(uncompressedFile);
+            GZIPOutputStream out = new GZIPOutputStream(new FileOutputStream(gzippedFile));
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1){
+                out.write(buffer,0, bytesRead);
+            }
+            fis.close();
+            out.close();
+            return gzippedFile;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+</code></pre>
+
+<h4>Links</h4>
+
+<h2>Links</h2>
+
+<ul>
+<li><a href="http://ceur-ws.org/Vol-581/gvd2010_7_1.pdf">Höpfner, Bunse (2010) Towards an energy-consumption based complexity classification for resource substitution strategies</a></li>
+</ul>
+
+
+            <h2>Related</h2>
+            <ul>
+                
+                <li>
+                    <a href="../smells/bulk_data_transfer.html">Bulk data transfer on slow network</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/durable_wakelock.html">Durable WakeLock</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/early_resource_binding.html">Early Resource Binding</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/inefficient_data_format_parser.html">Inefficient data format and parser</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/inefficient_sql_query.html">Inefficient SQL query</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/network_io_operations_in_main_thread.html">Network &amp; IO operations in main thread</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/prohibited_background_data_transfer.html">Prohibited data transfer</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/rigid_alarmmanager.html">Rigid AlarmManager</a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    <div id="footer">
+      <div class="container">
+        <p class="text-muted credit">by Martin Brylski 2013</p>
+      </div>
+    </div>
+
+    <script defer="defer"  src="../js/jquery.js"></script><script defer="defer"  src="../js/bootstrap.min.js"></script><script defer="defer"  src="../js/holder.js"></script><script defer="defer"  src="../js/html5shiv.js"></script><script defer="defer"  src="../js/prettify.js"></script><script defer="defer"  src="../js/app.js"></script></body>
+</html>

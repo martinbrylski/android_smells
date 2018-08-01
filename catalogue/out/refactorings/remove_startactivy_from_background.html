@@ -1,0 +1,17 @@
+<h3>Remove startActivity() from background</h3>
+
+<h4>Resolves</h4>
+
+<p>User Experience,User Conformity</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p><em>BroadcastRecievers</em> and <em>Services</em> should not call <code>startActivity()</code>. Just inform the user that something happens. Use <a href="http://developer.android.com/guide/topics/ui/notifiers/notifications.html">Notifications</a> instead.</p>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="http://developer.android.com/guide/practices/seamlessness.html#interrupt">Don&#39;t interrupt the user</a></li>
+</ul>

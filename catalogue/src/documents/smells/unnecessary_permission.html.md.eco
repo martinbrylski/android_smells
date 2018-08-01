@@ -1,0 +1,38 @@
+---
+title: "Unnecessary permission"
+short: up
+layout: "smell"
+affects:
+    - Security
+    - User Conformity
+    - User Experience
+context:
+    - Implementation
+refactorings:
+    - use_activity_intent
+tags:
+    - security
+    - user conformity
+    - user experience
+    - permission
+---
+
+## Context
+
+<%= @document.context %>
+
+## Affects
+
+<%= @document.affects %>
+
+## Problem
+
+The app requests several permissions, some of them are not needed, as they can be replaced easily.
+
+The more permissions an app needs, the more suspicious it is for the user.
+
+## Refactorings
+
+<% for refactoring in @getRefactorings(): %>
+<%- @include(refactoring) %>
+<% end %>

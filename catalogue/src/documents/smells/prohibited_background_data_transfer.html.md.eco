@@ -1,0 +1,35 @@
+---
+title: "Prohibited data transfer"
+short: idt
+layout: "smell"
+affects:
+    - Energy Efficiency
+    - User Conformity
+    - User Experience
+context:
+    - Network
+refactorings:
+    - check_background_transfer
+tags:
+    - energy
+    - network
+    - user conformity
+---
+
+## Context
+
+<%= @document.context %>
+
+## Affects
+
+<%= @document.affects %>
+
+## Problem
+
+It is not checked if the user has disabled background data transmission before transmitting.
+
+## Refactorings
+
+<% for refactoring in @getRefactorings(): %>
+<%- @include(refactoring) %>
+<% end %>

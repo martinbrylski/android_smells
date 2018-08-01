@@ -1,0 +1,44 @@
+---
+title: "Not descriptive UI"
+short: ndui
+layout: "smell"
+affects:
+    - Accessibility
+    - User Conformity
+    - User Experience
+context:
+    - UI
+refactorings:
+    - set_content_description
+tags:
+    - accessibility
+    - user conformity
+    - user experience
+---
+
+## Context
+
+<%= @document.context %>
+
+## Affects
+
+<%= @document.affects %>
+
+## Problem
+
+For visually or otherwise physically impaired people it is hard to navigate the app and keep track what is shown. To help these people Android porived TalkBack, an app that reads the contents out.
+
+So every UI element should have content description what it is for. Several elements as labels, and text fields do have this intentionally, but others have not:
+
+- [ImageButton](http://developer.android.com/reference/android/widget/ImageButton.html)
+- [ImageView](http://developer.android.com/reference/android/widget/ImageView.html)
+- [EditText](http://developer.android.com/reference/android/widget/EditText.html)
+
+If these elements have not set [`android:contentDescription`](http://developer.android.com/reference/android/view/View.html#attr_android:contentDescription) in the XML (or via `setContentDescription()`), then it is considered a smell.
+
+
+## Refactorings
+
+<% for refactoring in @getRefactorings(): %>
+<%- @include(refactoring) %>
+<% end %>

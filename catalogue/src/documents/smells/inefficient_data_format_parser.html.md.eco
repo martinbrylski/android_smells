@@ -1,0 +1,45 @@
+---
+title: "Inefficient data format and parser"
+short: idfap
+layout: "smell"
+affects:
+    - Efficiency
+context:
+    - Network
+    - IO
+refactorings:
+    - use_efficient_data_parser
+tags:
+    - io
+    - network
+    - efficiency
+---
+
+## Context
+
+<%= @document.context %>
+
+## Affects
+
+<%= @document.affects %>
+
+## Problem
+
+The use of TreeParsers is slow.
+
+This is a comparison of different data formats and parsers. It is taken from: [Coding for Life -- Battery Life, That is](http://www.google.com/events/io/2009/sessions/CodingLifeBatteryLife.html)
+
+<div class="row">
+    <div class="col-md-10">
+        <img src="<%= @getRelativeUrl('/images/dataformat_parser.png') %>" alt="Data Format and Parser Comparison"  class="img-responsive img-rounded"/>
+    </div>
+    <div class="col-md-2">
+        <img src="<%= @getRelativeUrl('/images/dataformat_parser_legend.png') %>" alt="Data Format and Parser Comparison"  class="img-responsive img-rounded"/>
+    </div>
+</div>
+
+## Refactorings
+
+<% for refactoring in @getRefactorings(): %>
+<%- @include(refactoring) %>
+<% end %>

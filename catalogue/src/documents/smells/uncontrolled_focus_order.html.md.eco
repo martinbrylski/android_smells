@@ -1,0 +1,33 @@
+---
+title: "Uncontrolled focus order"
+short: ufo
+layout: "smell"
+affects:
+    - User Experience
+    - Accessibility
+context:
+    - UI
+refactorings:
+    - control_focus_order
+tags:
+    - accessibility
+    - user experience
+---
+
+## Context
+
+<%= @document.context %>
+
+## Affects
+
+<%= @document.affects %>
+
+## Problem
+
+Using directional controls means that there a four directions of navigation up, down, left (previous) and right (next). By default the Android system computes the nearest neighbor ui element and set it appropriatly. In some cases this might not be the desired (unlogical) effect.
+
+## Refactorings
+
+<% for refactoring in @getRefactorings(): %>
+<%- @include(refactoring) %>
+<% end %>

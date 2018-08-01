@@ -1,0 +1,37 @@
+---
+title: "No wakeup Alarmmanager"
+affectsPositive:
+    - Efficiency
+    - Energy Efficiency
+---
+
+### <%= @document.title %>
+
+#### Resolves
+
+<%= @document.affectsPositive %>
+
+#### Affects
+
+<%= @document.affectsNegative %>
+
+#### Solution
+
+Use
+
+```
+am.setRepeating(AlarmManager.RTC, firstWake, interval, pendingIntent);
+```
+
+instead of
+
+```
+am.setRepeating(AlarmManager.RTC_WAKEUP, firstWake, interval, pendingIntent);
+```
+
+whereas the option `AlarmManager.RTC` will not wakeup the phone if it is off.
+
+#### Links
+
+- [Coding for Life -- Battery Life, That is](http://www.google.com/events/io/2009/sessions/CodingLifeBatteryLife.html)
+- [AlarmManager Developer Documentation](http://developer.android.com/reference/android/app/AlarmManager.html)

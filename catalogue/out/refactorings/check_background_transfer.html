@@ -1,0 +1,36 @@
+<h3>Check background data transfer</h3>
+
+<h4>Resolves</h4>
+
+<p>Energy Efficiency,User Conformity</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<pre><code>ConnectivityManager mConnectivity;
+TelephonyManager mTelephony;
+
+// Skip if no connection, or background data disabled
+NetworkInfo info = mConnectivity.getActiveNetworkInfo();
+if (info == null || !mConnectivity.getBackgroundDataSetting()) {
+    return false;
+}
+
+</code></pre>
+
+<h5>Note</h5>
+
+<p>From Developer Documentation:</p>
+
+<blockquote>
+<p>This method was deprecated in API level 14. As of <em>ICE_CREAM_SANDWICH</em>, availability of background data depends on several combined factors, and this method will always return true. Instead, when background data is unavailable, <em>getActiveNetworkInfo()</em> will now appear disconnected.<br/>
+<small><cite><a href="http://developer.android.com/reference/android/net/ConnectivityManager.html#getBackgroundDataSetting()">ConnectivityManager.html</a></cite></small></p>
+</blockquote>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="http://www.google.com/events/io/2009/sessions/CodingLifeBatteryLife.html">Coding for Life &ndash; Battery Life, That is</a></li>
+<li><a href="http://developer.android.com/reference/android/net/ConnectivityManager.html">Developer Documentation</a></li>
+</ul>

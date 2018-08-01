@@ -1,0 +1,51 @@
+---
+title: "Introduce Weak Reference"
+affectsPositive:
+    - Memory Efficiency
+---
+
+### <%= @document.title %>
+
+#### Resolves
+
+<%= @document.affectsPositive %>
+
+#### Affects
+
+<%= @document.affectsNegative %>
+
+#### Solution
+
+Use a [WeakReference](http://developer.android.com/reference/java/lang/ref/WeakReference.html). Objects hold by WeakReferences will still be garbage collected.
+
+```
+public class SampleActivity extends Activity {
+    private static class MyHandler extends Handler {
+        private final WeakReference<SampleActivity> mActivity;
+        public MyHandler(SampleActivity activity) {
+            mActivity = new WeakReference<SampleActivity>(activity);
+        }
+        @Override
+        public void handleMessage(Message msg) {
+            SampleActivity activity = mActivity.get();
+            if (activity != null) {
+                // ...
+            }
+        }
+    }
+    private final MyHandler mHandler = new MyHandler(this);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Post a message and delay its execution for 10 minutes.
+        mHandler.postDelayed(... , 600000);
+        // Go back to the previous Activity.
+        finish();
+    }
+}
+```
+
+#### Links
+
+- [Android Design patterns](http://www.androiddesignpatterns.com/2013/01/inner-class-handler-memory-leak.html)
+- [Memory Efficiency Managment in Android Apps (Google IO presentation)](http://www.google.com/events/io/2011/sessions/memory-management-for-android-apps.html)

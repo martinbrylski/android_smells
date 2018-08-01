@@ -1,0 +1,223 @@
+<html>
+<head>
+    <title>Unnecessary permission | Android Smells Catalogue</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Martin Brylski">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="generator" content="DocPad v6.54.0" />
+    <!--[if IE 7 ]>
+    <link rel="stylesheet" href="css/ink-ie7.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <![endif]-->
+    <link  rel="stylesheet" href="../css/bootstrap.min.css" /><link  rel="stylesheet" href="../css/style.css" /><link  rel="stylesheet" href="../css/highlight.css" /></head>
+<body class="smell">
+
+    <div id="wrap">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                  <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../index.html">Android Smells</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        
+                        <li class="inactive">
+                            <a href="../index.html">Catalogue</a>
+                        </li>
+                        
+                        <li class="inactive">
+                            <a href="../about.html">About</a>
+                        </li>
+                        
+                    </ul>
+
+                    <form class="navbar-form navbar-right" role="search" method="get" action="../search.html">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search" name="keys">
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+
+
+        <div class="container">
+            <h1 class="capitalize">Unnecessary permission</h1>
+
+            <h2>Context</h2>
+
+<p>Implementation</p>
+
+<h2>Affects</h2>
+
+<p>Security,User Conformity,User Experience</p>
+
+<h2>Problem</h2>
+
+<p>The app requests several permissions, some of them are not needed, as they can be replaced easily.</p>
+
+<p>The more permissions an app needs, the more suspicious it is for the user.</p>
+
+<h2>Refactorings</h2>
+
+<h3>Use activity intent</h3>
+
+<h4>Resolves</h4>
+
+<p>Security,User Conformity</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<blockquote>
+<p>Permissions aren&#39;t required if you launch an activity that has the permission<br/>
+<small><cite><a href="https://developers.google.com/events/io/2012/sessions/gooio2012/107/">Security and Privacy in Android Apps</a></cite></small></p>
+</blockquote>
+
+<p>That is:</p>
+
+<ul>
+<li>getting a picture from the camera</li>
+<li>sending a sms from the sms app</li>
+</ul>
+
+<p>The user decides wether it executes this action and by what concrete app.</p>
+
+<p>This is an example of how to get a camera picture:</p>
+
+<pre><code>// create Intent to take a picture and return control to the calling application
+Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+// create a file to save the image
+fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+// set the image file name
+intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+// start the image capture Intent
+startActivityForResult(intent, MY_REQUEST_CODE);
+</code></pre>
+
+<p>This is an example of how to write a sms:</p>
+
+<pre><code>Uri smsNumber = Uri.parse(&quot;sms:5551212&quot;);
+Intent intent = new Intent(Intent.ACTION_VIEW);
+intent.setData(smsNumber);
+intent.putExtra(Intent.EXTRA_TEXT, &quot;hey there!&quot;);
+startActivity(intent);
+</code></pre>
+
+<p>This is an example of how to read a contact:</p>
+
+<pre><code>public class MyActivity extends Activity {
+     ...
+
+     static final int PICK_CONTACT_REQUEST = 0;
+
+     protected boolean onKeyDown(int keyCode, KeyEvent event) {
+         if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
+             // When the user center presses, let them pick a contact.
+             startActivityForResult(
+                 new Intent(Intent.ACTION_PICK,
+                 new Uri(&quot;content://contacts&quot;)),
+                 PICK_CONTACT_REQUEST);
+            return true;
+         }
+         return false;
+     }
+
+     protected void onActivityResult(int requestCode, int resultCode,
+             Intent data) {
+         if (requestCode == PICK_CONTACT_REQUEST) {
+             if (resultCode == RESULT_OK) {
+                 // A contact was picked.  Here we will just display it
+                 // to the user.
+                 startActivity(new Intent(Intent.ACTION_VIEW, data));
+             }
+         }
+     }
+ }
+}
+</code></pre>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="https://developers.google.com/events/io/2012/sessions/gooio2012/107/">Security and Privacy in Android Apps</a></li>
+<li><a href="http://developer.android.com/guide/topics/media/camera.html#manifest">Camera | Manifest Declarations</a></li>
+<li><a href="http://developer.android.com/reference/android/app/Activity.html#StartingActivities">Activity | Starting Activities</a></li>
+</ul>
+
+
+            <h2>Related</h2>
+            <ul>
+                
+                <li>
+                    <a href="../smells/debuggable_release.html">Debuggable Release</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/prohibited_background_data_transfer.html">Prohibited data transfer</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/dropped_data.html">Dropped Data</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/interrupting_from_background.html">Interrupting from background</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/network_io_operations_in_main_thread.html">Network &amp; IO operations in main thread</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/not_descriptive_ui.html">Not descriptive UI</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/bulk_data_transfer.html">Bulk data transfer on slow network</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/public_data.html">Public data</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/set_configchanges.html">Set config changes</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/tracking_hardwareid.html">Tracking Hardware Id</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/uncontrolled_focus_order.html">Uncontrolled focus order</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/untouchable.html">Untouchable</a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    <div id="footer">
+      <div class="container">
+        <p class="text-muted credit">by Martin Brylski 2013</p>
+      </div>
+    </div>
+
+    <script defer="defer"  src="../js/jquery.js"></script><script defer="defer"  src="../js/bootstrap.min.js"></script><script defer="defer"  src="../js/holder.js"></script><script defer="defer"  src="../js/html5shiv.js"></script><script defer="defer"  src="../js/prettify.js"></script><script defer="defer"  src="../js/app.js"></script></body>
+</html>

@@ -1,0 +1,32 @@
+<h3>Use Efficient Data Structure</h3>
+
+<h4>Resolves</h4>
+
+<p>Efficiency</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p>Use <a href="http://developer.android.com/reference/android/util/SparseArray.html">SparseArray</a> instead:</p>
+
+<pre><code>SparseArray&lt;Bitmap&gt; bitmaps = new SparseArray&lt;Bitmap&gt;()
+
+bitmaps.append(i, newBitmap);
+</code></pre>
+
+<p>See also:</p>
+
+<ul>
+<li><a href="http://developer.android.com/reference/android/util/SparseLongArray.html">SparseLongArray</a></li>
+<li><a href="http://developer.android.com/reference/android/util/SparseIntArray.html">SparseIntArray</a></li>
+<li><a href="http://developer.android.com/reference/android/util/SparseBooleanArray.html">SparseBooleanArray</a></li>
+<li><a href="http://developer.android.com/reference/android/util/LongSparseArray.html">LongSparseArray</a></li>
+</ul>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="http://www.programmingmobile.com/2012/07/android-Efficiency-tweaking-parsearray.html">Android Efficiency Tweaking: SparseArray Versus Hashmap</a></li>
+<li><a href="https://speakerdeck.com/cyrilmottier/optimizing-android-ui-pro-tips-for-creating-smooth-and-responsive-apps">Optimizing Android UI: Pro tips for creating smooth and responsive apps</a></li>
+</ul>

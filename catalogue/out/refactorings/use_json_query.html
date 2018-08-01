@@ -1,0 +1,25 @@
+<h3>Use JSON query</h3>
+
+<h4>Resolves</h4>
+
+<p>Efficiency</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p>According to an answer in <em>Programmers Stackexchange</em> the use of a SQL query is discouraged as it introduces a lot of overhead. It should be preferred to send a query to webserver and revieve e.g. a * response. This response could be compressed efficiently.</p>
+
+<p>Beyond that the projection of a query should be minimised:</p>
+
+<pre><code>/* BAD */
+select * from verybigtable
+/* BETTER */
+select id, singlecolumn from verybigtable
+</code></pre>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="http://programmers.stackexchange.com/questions/170463">Why to use web services instead of direct access to a relational database for an android app?</a></li>
+</ul>

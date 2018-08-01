@@ -1,0 +1,36 @@
+<h3>Control focus order</h3>
+
+<h4>Resolves</h4>
+
+<p>Accessibility,User Experience</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p>Use the XML attributes:</p>
+
+<ul>
+<li><code>android:nextFocusDown</code></li>
+<li><code>android:nextFocusLeft</code></li>
+<li><code>android:nextFocusRight</code></li>
+<li><code>android:nextFocusUp</code></li>
+</ul>
+
+<p>It is also possible to set it at runtime via:</p>
+
+<ul>
+<li><code>setNextFocusDownId()</code></li>
+<li><code>setNextFocusLeftId()</code></li>
+<li><code>setNextFocusRightId()</code></li>
+<li><code>setNextFocusUpId()</code></li>
+</ul>
+
+<p>It might be necessary to set the <code>android:focusable</code> attribute first (on elements that do not set it true by default).</p>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="http://developer.android.com/guide/topics/ui/accessibility/apps.html#focus-order">Controlling focus order</a></li>
+<li><a href="http://android-developers.blogspot.de/2012/04/accessibility-are-you-serving-all-your.html">Accessibility: Are You Serving All Your Users?</a></li>
+</ul>

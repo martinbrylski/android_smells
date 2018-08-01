@@ -1,0 +1,36 @@
+---
+title: "Network & IO operations in main thread"
+short: niooimt
+layout: "smell"
+affects:
+    - User Experience
+context:
+    - UI
+    - Implementation
+    - IO
+    - Network
+refactorings:
+    - use_strictmode
+tags:
+    - user experience
+    - io
+    - network
+---
+
+## Context
+
+<%= @document.context %>
+
+## Affects
+
+<%= @document.affects %>
+
+## Problem
+
+The main thread is where the UI lives in. Therefor it is not recommended to do heavy operations (network, io, sql) in it.
+
+## Refactorings
+
+<% for refactoring in @getRefactorings(): %>
+<%- @include(refactoring) %>
+<% end %>

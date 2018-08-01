@@ -1,0 +1,118 @@
+<html>
+<head>
+    <title>Debuggable Release | Android Smells Catalogue</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Martin Brylski">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="generator" content="DocPad v6.54.0" />
+    <!--[if IE 7 ]>
+    <link rel="stylesheet" href="css/ink-ie7.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <![endif]-->
+    <link  rel="stylesheet" href="../css/bootstrap.min.css" /><link  rel="stylesheet" href="../css/style.css" /><link  rel="stylesheet" href="../css/highlight.css" /></head>
+<body class="smell">
+
+    <div id="wrap">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                  <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../index.html">Android Smells</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        
+                        <li class="inactive">
+                            <a href="../index.html">Catalogue</a>
+                        </li>
+                        
+                        <li class="inactive">
+                            <a href="../about.html">About</a>
+                        </li>
+                        
+                    </ul>
+
+                    <form class="navbar-form navbar-right" role="search" method="get" action="../search.html">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search" name="keys">
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+
+
+        <div class="container">
+            <h1 class="capitalize">Debuggable Release</h1>
+
+            <h2>Context</h2>
+
+<p>Implementation</p>
+
+<h2>Affects</h2>
+
+<p>Security</p>
+
+<h2>Problem</h2>
+
+<p>The attribute <a href="http://developer.android.com/guide/topics/manifest/application-element.html"><code>android:debuggable</code></a> in the <em>AndroidManifest.xml</em> is set at development time to debug the app. But it is left in release time. This is a severe security issue.</p>
+
+<h2>Refactorings</h2>
+
+<h3>Remove Debuggable Attribute</h3>
+
+<h4>Resolves</h4>
+
+<p>Security</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p>Remove the <code>android:debuggable</code> attribute or set it to <em>false</em> explicitly.</p>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="https://developers.google.com/events/io/2012/sessions/gooio2012/107/">Security and Privacy in Android Apps</a></li>
+<li><a href="http://stackoverflow.com/questions/4580595/what-would-happen-if-android-app-is-released-with-debuggable-on">What would happen if Android app is released with debuggable on?</a></li>
+</ul>
+
+
+            <h2>Related</h2>
+            <ul>
+                
+                <li>
+                    <a href="../smells/public_data.html">Public data</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/tracking_hardwareid.html">Tracking Hardware Id</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/unnecessary_permission.html">Unnecessary permission</a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    <div id="footer">
+      <div class="container">
+        <p class="text-muted credit">by Martin Brylski 2013</p>
+      </div>
+    </div>
+
+    <script defer="defer"  src="../js/jquery.js"></script><script defer="defer"  src="../js/bootstrap.min.js"></script><script defer="defer"  src="../js/holder.js"></script><script defer="defer"  src="../js/html5shiv.js"></script><script defer="defer"  src="../js/prettify.js"></script><script defer="defer"  src="../js/app.js"></script></body>
+</html>

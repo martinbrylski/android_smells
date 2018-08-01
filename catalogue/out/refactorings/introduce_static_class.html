@@ -1,0 +1,30 @@
+<h3>Introduce Static Class</h3>
+
+<h4>Resolves</h4>
+
+<p>Memory Efficiency</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p>Declare a static instance of the class:</p>
+
+<pre><code>/**
+ * Instances of anonymous classes do not hold an implicit
+ * reference to their outer class when they are &quot;static&quot;.
+ */
+private static final Runnable sRunnable = new Runnable() {
+  @Override
+  public void run() {
+      ...
+  }
+}
+</code></pre>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="http://www.androiddesignpatterns.com/2013/01/inner-class-handler-memory-leak.html">Inner class handler memory leak</a></li>
+<li><a href="http://www.google.com/events/io/2011/sessions/memory-management-for-android-apps.html">Memory Efficiency Managment in Android Apps (Google IO presentation)</a></li>
+</ul>

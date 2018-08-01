@@ -1,0 +1,48 @@
+---
+title: "Rigid AlarmManager"
+short: ram
+layout: "smell"
+affects:
+    - Efficiency
+    - Energy Efficiency
+
+context:
+    - Implementation
+refactorings:
+    - inexact_alarmmanager
+    - nowake_alarmmanager
+tags:
+    - alarm
+    - energy
+    - effciency
+---
+
+## Context
+
+<%= @document.context %>
+
+## Affects
+
+<%= @document.affects %>
+
+## Problem
+
+With the use of AlarmManager it is possible that operations can be executed at a sepcific moment in the future. It is possible that several operations got executed. Every AlarmManager-triggered operation wakes up the phone, so the overall use of energy and CPU might be higher, then if bundled together.
+
+```
+AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+Intent intent = new Intent(context, MyService.class);
+PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);
+
+long interval = DateUtils.MINUTE_IN_MILLIS * 30;
+long firstWake = System.currentTimeMillis() + interval;
+
+am.setRepeating(AlarmManager.RTC_WAKEUP, firstWake, interval, pendingIntent);
+```
+
+## Refactorings
+
+<% for refactoring in @getRefactorings(): %>
+<%- @include(refactoring) %>
+<% end %>

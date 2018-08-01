@@ -1,0 +1,23 @@
+---
+title: "Introduce Static Method"
+affectsPositive:
+    - Efficiency
+---
+
+### <%= @document.title %>
+
+#### Resolves
+
+<%= @document.affectsPositive %>
+
+#### Affects
+
+<%= @document.affectsNegative %>
+
+#### Solution
+
+Make the method `static`.
+
+#### Links
+
+- [Efficiency Tips](http://developer.android.com/training/articles/perf-tips.html#PreferStatic)

@@ -1,0 +1,187 @@
+<html>
+<head>
+    <title>Network &amp; IO operations in main thread | Android Smells Catalogue</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Martin Brylski">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="generator" content="DocPad v6.54.0" />
+    <!--[if IE 7 ]>
+    <link rel="stylesheet" href="css/ink-ie7.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <![endif]-->
+    <link  rel="stylesheet" href="../css/bootstrap.min.css" /><link  rel="stylesheet" href="../css/style.css" /><link  rel="stylesheet" href="../css/highlight.css" /></head>
+<body class="smell">
+
+    <div id="wrap">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                  <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../index.html">Android Smells</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        
+                        <li class="inactive">
+                            <a href="../index.html">Catalogue</a>
+                        </li>
+                        
+                        <li class="inactive">
+                            <a href="../about.html">About</a>
+                        </li>
+                        
+                    </ul>
+
+                    <form class="navbar-form navbar-right" role="search" method="get" action="../search.html">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search" name="keys">
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+
+
+        <div class="container">
+            <h1 class="capitalize">Network &amp; IO operations in main thread</h1>
+
+            <h2>Context</h2>
+
+<p>UI,Implementation,IO,Network</p>
+
+<h2>Affects</h2>
+
+<p>User Experience</p>
+
+<h2>Problem</h2>
+
+<p>The main thread is where the UI lives in. Therefor it is not recommended to do heavy operations (network, io, sql) in it.</p>
+
+<h2>Refactorings</h2>
+
+<h3>Use StrictMode</h3>
+
+<h4>Resolves</h4>
+
+<p>User Experience</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<blockquote>
+<p>StrictMode is a developer tool which detects things you might be doing by accident and brings them to your attention so you can fix them.</p>
+</blockquote>
+
+<p>It is policy on a thread that lets you set what is not allowed and how you will be noticed.</p>
+
+<p><em>StrictMode</em> can be enabled in Application, Activity or in another applications <code>onCreate()</code> method. See this very basic example:</p>
+
+<pre><code>public void onCreate() {
+    if (DEVELOPER_MODE) {
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+            .detectDiskReads()
+            .detectDiskWrites()
+            .detectNetwork()   // or .detectAll() for all detectable problems
+            .penaltyLog()
+            .build());
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+            .detectLeakedSqlLiteObjects()
+            .detectLeakedClosableObjects()
+            .penaltyLog()
+            .penaltyDeath()
+            .build());
+    }
+    super.onCreate();
+}
+</code></pre>
+
+<h5>Note</h5>
+
+<p>Be careful to don&#39;t publish applications with StrictMode turned on.</p>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="http://android-developers.blogspot.de/2010/12/new-gingerbread-api-strictmode.html">New Gingerbread API: StrictMode</a></li>
+<li><a href="http://developer.android.com/reference/android/os/StrictMode.html">Developer Documentation</a></li>
+</ul>
+
+
+            <h2>Related</h2>
+            <ul>
+                
+                <li>
+                    <a href="../smells/data_transmission_without_compression.html">Data Transmission Without Compression</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/prohibited_background_data_transfer.html">Prohibited data transfer</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/inefficient_data_format_parser.html">Inefficient data format and parser</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/inefficient_sql_query.html">Inefficient SQL query</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/interrupting_from_background.html">Interrupting from background</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/not_descriptive_ui.html">Not descriptive UI</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/bulk_data_transfer.html">Bulk data transfer on slow network</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/public_data.html">Public data</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/set_configchanges.html">Set config changes</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/tracking_hardwareid.html">Tracking Hardware Id</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/uncontrolled_focus_order.html">Uncontrolled focus order</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/unnecessary_permission.html">Unnecessary permission</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/untouchable.html">Untouchable</a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    <div id="footer">
+      <div class="container">
+        <p class="text-muted credit">by Martin Brylski 2013</p>
+      </div>
+    </div>
+
+    <script defer="defer"  src="../js/jquery.js"></script><script defer="defer"  src="../js/bootstrap.min.js"></script><script defer="defer"  src="../js/holder.js"></script><script defer="defer"  src="../js/html5shiv.js"></script><script defer="defer"  src="../js/prettify.js"></script><script defer="defer"  src="../js/app.js"></script></body>
+</html>

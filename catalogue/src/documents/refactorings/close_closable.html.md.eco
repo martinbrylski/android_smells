@@ -1,0 +1,44 @@
+---
+title: "Close Closable"
+affectsPositive:
+    - Memory Efficiency
+---
+
+### <%= @document.title %>
+
+#### Resolves
+
+<%= @document.affectsPositive %>
+
+#### Affects
+
+<%= @document.affectsNegative %>
+
+#### Solution
+
+The object should be closed properly with
+
+```
+import java.io.Closable
+
+Closable object = ...
+
+// do anything with object
+
+object.close();
+```
+
+##### Note
+
+Currently Android only supports Java 6. But if it will support Java 7 one can also use the `java.lang.AutoCloseable` interface in conjunction with the *try-with-ressources* statement:
+
+```
+try (AutoCloseable object = ...) {
+   object.doStuff();
+}
+```
+
+#### Links
+
+- [Pro Android Apps Efficiency Optimization](http://www.apress.com/9781430239994)
+- [Developer Documentation](http://developer.android.com/reference/java/io/Closeable.html)

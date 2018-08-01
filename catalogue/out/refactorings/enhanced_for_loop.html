@@ -1,0 +1,33 @@
+<h3>Enhanced For-Loop</h3>
+
+<h4>Resolves</h4>
+
+<p>Efficiency</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p>Consider the following code taken from <a href="http://developer.android.com/training/articles/perf-tips.html#Loops">these Efficiency tips</a>:</p>
+
+<pre><code>static class Foo {
+    int mSplat;
+}
+Foo[] mArray = ...
+
+public void two() {
+    int sum = 0;
+    for (Foo a : mArray) {
+        sum += a.mSplat;
+    }
+}
+</code></pre>
+
+<p>This is the fastest for devices without <em>JIT</em> and indistinguishable from <code>one()</code> for devices with a JIT.<br/>
+But consider a hand-written counted loop for Efficiency-critical ArrayList iteration.</p>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="http://developer.android.com/training/articles/perf-tips.html#Loops">Efficiency Tips</a></li>
+</ul>

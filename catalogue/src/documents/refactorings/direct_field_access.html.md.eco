@@ -1,0 +1,27 @@
+---
+title: "Direct Field Access"
+affectsPositive:
+    - Efficiency
+---
+
+### <%= @document.title %>
+
+#### Resolves
+
+<%= @document.affectsPositive %>
+
+#### Affects
+
+<%= @document.affectsNegative %>
+
+#### Solution
+
+Consider accessing the fields directly and only use getters and setters in public API.
+
+Taken from the [Efficiency Tips](http://developer.android.com/training/articles/perf-tips.html#GettersSetters):
+
+> Without a JIT, direct field access is about 3x faster than invoking a trivial getter. With the JIT (where direct field access is as cheap as accessing a local), direct field access is about 7x faster than invoking a trivial getter.
+
+#### Links
+
+- [Efficiency Tips](http://developer.android.com/training/articles/perf-tips.html#GettersSetters)

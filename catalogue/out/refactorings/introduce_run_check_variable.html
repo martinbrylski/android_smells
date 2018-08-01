@@ -1,0 +1,55 @@
+<h3>Introduce Run Check Variable</h3>
+
+<h4>Resolves</h4>
+
+<p>Memory Efficiency</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p>This will introduce a variable to check if the thread operation should still be performed.</p>
+
+<pre><code>public class MainActivity extends Activity {
+  private MyThread mThread;
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    doIt();
+  }
+
+  private void doIt() {
+    mThread = new MyThread();
+    mThread.start();
+  }
+
+  private static class MyThread extends Thread {
+    private boolean mRunning = false;
+
+    @Override
+    public void run() {
+      mRunning = true;
+      while (mRunning) {
+        doReallyHeavyStuff();
+      }
+    }
+
+    public void close() {
+      mRunning = false;
+    }
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    mThread.close();
+  }
+}
+</code></pre>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="http://www.androiddesignpatterns.com/2013/04/activitys-threads-memory-leaks.html">Activitys, Threads, &amp; Memory Efficiency Leaks</a></li>
+</ul>

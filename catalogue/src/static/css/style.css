@@ -1,0 +1,108 @@
+@import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+@font-face{font-family:'Ubuntu';src:url('../fonts/ubuntu-b-webfont.eot');src:url('../fonts/ubuntu-b-webfont.eot?#iefix') format('embedded-opentype'),url('../fonts/ubuntu-b-webfont.woff') format('woff'),url('../fonts/ubuntu-b-webfont.ttf') format('truetype'),url('../fonts/ubuntu-b-webfont.svg#ubuntubold') format('svg');font-weight:700;font-style:normal}
+@font-face{font-family:'Ubuntu';src:url('../fonts/ubuntu-bi-webfont.eot');src:url('../fonts/ubuntu-bi-webfont.eot?#iefix') format('embedded-opentype'),url('../fonts/ubuntu-bi-webfont.woff') format('woff'),url('../fonts/ubuntu-bi-webfont.ttf') format('truetype'),url('../fonts/ubuntu-bi-webfont.svg#ubuntubold_italic') format('svg');font-weight:700;font-style:italic}
+@font-face{font-family:'Ubuntu';src:url('../fonts/ubuntu-r-webfont.eot');src:url('../fonts/ubuntu-r-webfont.eot?#iefix') format('embedded-opentype'),url('../fonts/ubuntu-r-webfont.woff') format('woff'),url('../fonts/ubuntu-r-webfont.ttf') format('truetype'),url('../fonts/ubuntu-r-webfont.svg#ubunturegular') format('svg');font-weight:normal;font-style:normal}
+@font-face{font-family:'Ubuntu';src:url('../fonts/ubuntu-ri-webfont.eot');src:url('../fonts/ubuntu-ri-webfont.eot?#iefix') format('embedded-opentype'),url('../fonts/ubuntu-ri-webfont.woff') format('woff'),url('../fonts/ubuntu-ri-webfont.ttf') format('truetype'),url('../fonts/ubuntu-ri-webfont.svg#ubuntuitalic') format('svg');font-weight:normal;font-style:italic}
+@font-face{font-family:'Ubuntu_condensed';src:url('../fonts/ubuntu-c-webfont.eot');src:url('../fonts/ubuntu-c-webfont.eot?#iefix') format('embedded-opentype'),url('../fonts/ubuntu-c-webfont.woff') format('woff'),url('../fonts/ubuntu-c-webfont.ttf') format('truetype'),url('../fonts/ubuntu-c-webfont.svg#ubuntu_condensedregular') format('svg');font-weight:normal;font-style:normal}
+@font-face{font-family:'Ubuntu_light';src:url('../fonts/ubuntu-l-webfont.eot');src:url('../fonts/ubuntu-l-webfont.eot?#iefix') format('embedded-opentype'),url('../fonts/ubuntu-l-webfont.woff') format('woff'),url('../fonts/ubuntu-l-webfont.ttf') format('truetype'),url('../fonts/ubuntu-l-webfont.svg#ubuntu_lightregular') format('svg');font-weight:normal;font-style:normal}
+@font-face{font-family:'Ubuntu_light';src:url('../fonts/ubuntu-li-webfont.eot');src:url('../fonts/ubuntu-li-webfont.eot?#iefix') format('embedded-opentype'),url('../fonts/ubuntu-li-webfont.woff') format('woff'),url('../fonts/ubuntu-li-webfont.ttf') format('truetype'),url('../fonts/ubuntu-li-webfont.svg#ubuntu_lightitalic') format('svg');font-weight:normal;font-style:italic}
+@font-face{font-family:'Ubuntu_light';src:url('../fonts/ubuntu-m-webfont.eot');src:url('../fonts/ubuntu-m-webfont.eot?#iefix') format('embedded-opentype'),url('../fonts/ubuntu-m-webfont.woff') format('woff'),url('../fonts/ubuntu-m-webfont.ttf') format('truetype'),url('../fonts/ubuntu-m-webfont.svg#ubuntu_lightbold') format('svg');font-weight:700;font-style:normal}
+@font-face{font-family:'Ubuntu_light';src:url('../fonts/ubuntu-mi-webfont.eot');src:url('../fonts/ubuntu-mi-webfont.eot?#iefix') format('embedded-opentype'),url('../fonts/ubuntu-mi-webfont.woff') format('woff'),url('../fonts/ubuntu-mi-webfont.ttf') format('truetype'),url('../fonts/ubuntu-mi-webfont.svg#ubuntu_lightbold_italic') format('svg');font-weight:700;font-style:italic}
+@font-face{font-family:'Ubuntu_monospaced';src:url('../fonts/ubuntumono-b-webfont.eot');src:url('../fonts/ubuntumono-b-webfont.eot?#iefix') format('embedded-opentype'),url('../fonts/ubuntumono-b-webfont.woff') format('woff'),url('../fonts/ubuntumono-b-webfont.ttf') format('truetype'),url('../fonts/ubuntumono-b-webfont.svg#ubuntu_monobold') format('svg');font-weight:700;font-style:normal}
+@font-face{font-family:'Ubuntu_monospaced';src:url('../fonts/ubuntumono-bi-webfont.eot');src:url('../fonts/ubuntumono-bi-webfont.eot?#iefix') format('embedded-opentype'),url('../fonts/ubuntumono-bi-webfont.woff') format('woff'),url('../fonts/ubuntumono-bi-webfont.ttf') format('truetype'),url('../fonts/ubuntumono-bi-webfont.svg#ubuntu_monobold_italic') format('svg');font-weight:700;font-style:italic}
+@font-face{font-family:'Ubuntu_monospaced';src:url('../fonts/ubuntumono-r-webfont.eot');src:url('../fonts/ubuntumono-r-webfont.eot?#iefix') format('embedded-opentype'),url('../fonts/ubuntumono-r-webfont.woff') format('woff'),url('../fonts/ubuntumono-r-webfont.ttf') format('truetype'),url('../fonts/ubuntumono-r-webfont.svg#ubuntu_monoregular') format('svg');font-weight:normal;font-style:normal}
+@font-face{font-family:'Ubuntu_monospaced';src:url('../fonts/ubuntumono-ri-webfont.eot');src:url('../fonts/ubuntumono-ri-webfont.eot?#iefix') format('embedded-opentype'),url('../fonts/ubuntumono-ri-webfont.woff') format('woff'),url('../fonts/ubuntumono-ri-webfont.ttf') format('truetype'),url('../fonts/ubuntumono-ri-webfont.svg#ubuntu_monoitalic') format('svg');font-weight:normal;font-style:italic}
+
+html, body {
+    font-family: Ubuntu, Arial, Helvetica, Sans-serif;
+    height: 100%;
+}
+h2 {
+	border-bottom: 1px solid #f5f5f5;
+  padding-top: 20px;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Yanone Kaffeesatz', Ubuntu, sans-serif;
+}
+h4 {
+  font-size: 1.4em;
+}
+
+h5 {
+  font-size: 1.2em;
+}
+
+h6 {
+  font-size: 1em;
+}
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by its height */
+  margin: 0 auto -60px;
+  /* Pad bottom by footer height */
+  padding: 0 0 60px;
+}
+
+/* Set the fixed height of the footer here */
+#footer {
+  height: 60px;
+  background-color: #f5f5f5;
+}
+#wrap > .container {
+  padding: 60px 15px 0;
+}
+.container .credit {
+  margin: 20px 0;
+}
+
+#footer > .container {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.body { counter-reset: h2; }
+/* mind that Site title is h1 ... */
+
+h2 {counter-increment: h2; counter-reset: h3; }
+h3 {counter-increment: h3; counter-reset: h4; }
+h4 {counter-increment: h4; counter-reset: h5; }
+h5 {counter-increment: h5; counter-reset: h6; }
+h6 {counter-increment: h6;  }
+/* usage: enclose content with div class="heading_numbered" */
+h2:before {content:counter(h2)".  "; }
+h3:before {content:counter(h2)"."counter(h3)".  "; }
+h4:before {content:counter(h2)"."counter(h3)"."counter(h4)".  "; }
+h5:before {content:counter(h2)"."counter(h3)"."counter(h4)"."counter(h5)".  "; }
+h6:before {content:counter(h2)"."counter(h3)"."counter(h4)"."counter(h5)"."counter(h6)".  "; }
+
+.default h2:before, .default h3:before, .default h4:before, .default h5:before, .default h6:before {
+  content: none;
+  counter-increment: none;
+}
+
+.img-small {
+  height: 300px;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+th {
+  min-width: 40px;
+}
+
+td {
+  vertical-align: middle;
+}
+
+#lunr-results {
+  margin-top: 50px;
+}
+
+.smell-result a:before {
+  content: "» ";
+}

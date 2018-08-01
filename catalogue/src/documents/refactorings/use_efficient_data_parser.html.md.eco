@@ -1,0 +1,27 @@
+---
+title: "Use efficient data parser and format"
+affectsPositive:
+    - Efficiency
+---
+
+### <%= @document.title %>
+
+#### Resolves
+
+<%= @document.affectsPositive %>
+
+#### Affects
+
+<%= @document.affectsNegative %>
+
+#### Solution
+
+
+- Use "stream" parsers instead of tree parsers
+- Consider binary formats that can easily mix binary and text data into a single request
+
+
+#### Links
+
+- [Coding for Life -- Battery Life, That is](http://www.google.com/events/io/2009/sessions/CodingLifeBatteryLife.html)
+- [Developer Documentation](http://developer.android.com/reference/android/net/ConnectivityManager.html)

@@ -1,0 +1,52 @@
+---
+title: "Use StrictMode"
+affectsPositive:
+    - User Experience
+---
+
+### <%= @document.title %>
+
+#### Resolves
+
+<%= @document.affectsPositive %>
+
+#### Affects
+
+<%= @document.affectsNegative %>
+
+#### Solution
+
+> StrictMode is a developer tool which detects things you might be doing by accident and brings them to your attention so you can fix them.
+
+It is policy on a thread that lets you set what is not allowed and how you will be noticed.
+
+*StrictMode* can be enabled in Application, Activity or in another applications `onCreate()` method. See this very basic example:
+
+```
+public void onCreate() {
+    if (DEVELOPER_MODE) {
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+            .detectDiskReads()
+            .detectDiskWrites()
+            .detectNetwork()   // or .detectAll() for all detectable problems
+            .penaltyLog()
+            .build());
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+            .detectLeakedSqlLiteObjects()
+            .detectLeakedClosableObjects()
+            .penaltyLog()
+            .penaltyDeath()
+            .build());
+    }
+    super.onCreate();
+}
+```
+
+##### Note
+
+Be careful to don't publish applications with StrictMode turned on.
+
+#### Links
+
+- [New Gingerbread API: StrictMode](http://android-developers.blogspot.de/2010/12/new-gingerbread-api-strictmode.html)
+- [Developer Documentation](http://developer.android.com/reference/android/os/StrictMode.html)

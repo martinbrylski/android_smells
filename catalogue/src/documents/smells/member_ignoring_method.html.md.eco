@@ -1,0 +1,33 @@
+---
+title: "Member-Ignoring Method"
+short: mim
+layout: "smell"
+affects:
+    - Efficiency
+context:
+    - Implementation
+refactorings:
+    - introduce_static_method
+tags:
+    - idiom
+    - efficiency
+---
+
+## Context
+
+<%= @document.context %>
+
+## Affects
+
+<%= @document.affects %>
+
+## Problem
+
+Non-static methods that don't access any property.
+
+## Refactorings
+
+<% for refactoring in @getRefactorings(): %>
+<%- @include(refactoring) %>
+<% end %>
+

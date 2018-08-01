@@ -1,0 +1,161 @@
+<html>
+<head>
+    <title>Inefficient SQL query | Android Smells Catalogue</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Martin Brylski">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="generator" content="DocPad v6.54.0" />
+    <!--[if IE 7 ]>
+    <link rel="stylesheet" href="css/ink-ie7.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <![endif]-->
+    <link  rel="stylesheet" href="../css/bootstrap.min.css" /><link  rel="stylesheet" href="../css/style.css" /><link  rel="stylesheet" href="../css/highlight.css" /></head>
+<body class="smell">
+
+    <div id="wrap">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                  <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../index.html">Android Smells</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        
+                        <li class="inactive">
+                            <a href="../index.html">Catalogue</a>
+                        </li>
+                        
+                        <li class="inactive">
+                            <a href="../about.html">About</a>
+                        </li>
+                        
+                    </ul>
+
+                    <form class="navbar-form navbar-right" role="search" method="get" action="../search.html">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search" name="keys">
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+
+
+        <div class="container">
+            <h1 class="capitalize">Inefficient SQL query</h1>
+
+            <h2>Context</h2>
+
+<p>Implementation,Network,Database</p>
+
+<h2>Affects</h2>
+
+<p>Efficiency</p>
+
+<h2>Problem</h2>
+
+<p>To retrieve data from a database a SQL query is sent over a <em>JDBC</em> connection to a remote server.</p>
+
+<h2>Refactorings</h2>
+
+<h3>Use JSON query</h3>
+
+<h4>Resolves</h4>
+
+<p>Efficiency</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p>According to an answer in <em>Programmers Stackexchange</em> the use of a SQL query is discouraged as it introduces a lot of overhead. It should be preferred to send a query to webserver and revieve e.g. a * response. This response could be compressed efficiently.</p>
+
+<p>Beyond that the projection of a query should be minimised:</p>
+
+<pre><code>/* BAD */
+select * from verybigtable
+/* BETTER */
+select id, singlecolumn from verybigtable
+</code></pre>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="http://programmers.stackexchange.com/questions/170463">Why to use web services instead of direct access to a relational database for an android app?</a></li>
+</ul>
+
+
+            <h2>Related</h2>
+            <ul>
+                
+                <li>
+                    <a href="../smells/nested_layout.html">Nested Layout</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/bulk_data_transfer.html">Bulk data transfer on slow network</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/inefficient_data_format_parser.html">Inefficient data format and parser</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/inefficient_hashmap.html">Inefficient Data Structure</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/internal_getter_setter.html">Internal Getter/Setter</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/member_ignoring_method.html">Member-Ignoring Method</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/data_transmission_without_compression.html">Data Transmission Without Compression</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/network_io_operations_in_main_thread.html">Network &amp; IO operations in main thread</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/overdrawn_pixel.html">Overdrawn Pixel</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/prohibited_background_data_transfer.html">Prohibited data transfer</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/slow_loop.html">Slow Loop</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/uncached_views.html">Uncached Views</a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    <div id="footer">
+      <div class="container">
+        <p class="text-muted credit">by Martin Brylski 2013</p>
+      </div>
+    </div>
+
+    <script defer="defer"  src="../js/jquery.js"></script><script defer="defer"  src="../js/bootstrap.min.js"></script><script defer="defer"  src="../js/holder.js"></script><script defer="defer"  src="../js/html5shiv.js"></script><script defer="defer"  src="../js/prettify.js"></script><script defer="defer"  src="../js/app.js"></script></body>
+</html>

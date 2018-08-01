@@ -1,0 +1,28 @@
+<h3>No wakeup Alarmmanager</h3>
+
+<h4>Resolves</h4>
+
+<p>Efficiency,Energy Efficiency</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p>Use</p>
+
+<pre><code>am.setRepeating(AlarmManager.RTC, firstWake, interval, pendingIntent);
+</code></pre>
+
+<p>instead of</p>
+
+<pre><code>am.setRepeating(AlarmManager.RTC_WAKEUP, firstWake, interval, pendingIntent);
+</code></pre>
+
+<p>whereas the option <code>AlarmManager.RTC</code> will not wakeup the phone if it is off.</p>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="http://www.google.com/events/io/2009/sessions/CodingLifeBatteryLife.html">Coding for Life &ndash; Battery Life, That is</a></li>
+<li><a href="http://developer.android.com/reference/android/app/AlarmManager.html">AlarmManager Developer Documentation</a></li>
+</ul>

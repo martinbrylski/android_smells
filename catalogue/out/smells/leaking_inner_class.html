@@ -1,0 +1,216 @@
+<html>
+<head>
+    <title>Leaking Inner Class | Android Smells Catalogue</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Martin Brylski">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="generator" content="DocPad v6.54.0" />
+    <!--[if IE 7 ]>
+    <link rel="stylesheet" href="css/ink-ie7.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <![endif]-->
+    <link  rel="stylesheet" href="../css/bootstrap.min.css" /><link  rel="stylesheet" href="../css/style.css" /><link  rel="stylesheet" href="../css/highlight.css" /></head>
+<body class="smell">
+
+    <div id="wrap">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                  <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../index.html">Android Smells</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        
+                        <li class="inactive">
+                            <a href="../index.html">Catalogue</a>
+                        </li>
+                        
+                        <li class="inactive">
+                            <a href="../about.html">About</a>
+                        </li>
+                        
+                    </ul>
+
+                    <form class="navbar-form navbar-right" role="search" method="get" action="../search.html">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search" name="keys">
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+
+
+        <div class="container">
+            <h1 class="capitalize">Leaking Inner Class</h1>
+
+            <h2>Context</h2>
+
+<p>Implementation</p>
+
+<h2>Affects</h2>
+
+<p>Memory Efficiency</p>
+
+<h2>Problem</h2>
+
+<p>Non-static inner classes holds a reference to the outer class. This could lead to a memory leak.</p>
+
+<p>Here are two examples: One inner class and one anonymous inner class.</p>
+
+<pre><code>public class SampleActivity extends Activity {
+
+    private final Handler mLeakyHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            // ...
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Post a message and delay its execution for 10 minutes.
+        mLeakyHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // do anything
+            }
+        }, 60 * 10 * 1000);
+
+        // Go back to the previous Activity.
+        finish();
+    }
+}
+</code></pre>
+
+<h2>Refactorings</h2>
+
+<h3>Introduce Static Class</h3>
+
+<h4>Resolves</h4>
+
+<p>Memory Efficiency</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p>Declare a static instance of the class:</p>
+
+<pre><code>/**
+ * Instances of anonymous classes do not hold an implicit
+ * reference to their outer class when they are &quot;static&quot;.
+ */
+private static final Runnable sRunnable = new Runnable() {
+  @Override
+  public void run() {
+      ...
+  }
+}
+</code></pre>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="http://www.androiddesignpatterns.com/2013/01/inner-class-handler-memory-leak.html">Inner class handler memory leak</a></li>
+<li><a href="http://www.google.com/events/io/2011/sessions/memory-management-for-android-apps.html">Memory Efficiency Managment in Android Apps (Google IO presentation)</a></li>
+</ul>
+
+<h3>Introduce Weak Reference</h3>
+
+<h4>Resolves</h4>
+
+<p>Memory Efficiency</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p>Use a <a href="http://developer.android.com/reference/java/lang/ref/WeakReference.html">WeakReference</a>. Objects hold by WeakReferences will still be garbage collected.</p>
+
+<pre><code>public class SampleActivity extends Activity {
+    private static class MyHandler extends Handler {
+        private final WeakReference&lt;SampleActivity&gt; mActivity;
+        public MyHandler(SampleActivity activity) {
+            mActivity = new WeakReference&lt;SampleActivity&gt;(activity);
+        }
+        @Override
+        public void handleMessage(Message msg) {
+            SampleActivity activity = mActivity.get();
+            if (activity != null) {
+                // ...
+            }
+        }
+    }
+    private final MyHandler mHandler = new MyHandler(this);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Post a message and delay its execution for 10 minutes.
+        mHandler.postDelayed(... , 600000);
+        // Go back to the previous Activity.
+        finish();
+    }
+}
+</code></pre>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="http://www.androiddesignpatterns.com/2013/01/inner-class-handler-memory-leak.html">Android Design patterns</a></li>
+<li><a href="http://www.google.com/events/io/2011/sessions/memory-management-for-android-apps.html">Memory Efficiency Managment in Android Apps (Google IO presentation)</a></li>
+</ul>
+
+
+            <h2>Related</h2>
+            <ul>
+                
+                <li>
+                    <a href="../smells/leaking_thread.html">Leaking Thread</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/nested_layout.html">Nested Layout</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/no_low_memory_handler.html">No low memory resolver</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/set_configchanges.html">Set config changes</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/uncached_views.html">Uncached Views</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/unclosed_closable.html">Unclosed closable</a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    <div id="footer">
+      <div class="container">
+        <p class="text-muted credit">by Martin Brylski 2013</p>
+      </div>
+    </div>
+
+    <script defer="defer"  src="../js/jquery.js"></script><script defer="defer"  src="../js/bootstrap.min.js"></script><script defer="defer"  src="../js/holder.js"></script><script defer="defer"  src="../js/html5shiv.js"></script><script defer="defer"  src="../js/prettify.js"></script><script defer="defer"  src="../js/app.js"></script></body>
+</html>

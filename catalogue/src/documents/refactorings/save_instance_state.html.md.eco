@@ -1,0 +1,24 @@
+---
+title: "Save instance state"
+affectsPositive:
+    - User Conformity
+    - User Experience
+---
+
+### <%= @document.title %>
+
+#### Resolves
+
+<%= @document.affectsPositive %>
+
+#### Affects
+
+<%= @document.affectsNegative %>
+
+#### Solution
+
+The developer has to ensure that the state of the *Activity* or *Fragment* is stored, when the user inputted data. This is usually done in `onSaveInstanceState(Bundle outState)`. It can be restored by overriding `onRestoreInstanceState(Bundle)`.
+
+#### Links
+
+- <a href="http://developer.android.com/reference/android/app/Activity.html#onSaveInstanceState(android.os.Bundle)">Developer Documentation</a>

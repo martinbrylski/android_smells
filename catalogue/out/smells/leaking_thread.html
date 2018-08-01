@@ -1,0 +1,426 @@
+<html>
+<head>
+    <title>Leaking Thread | Android Smells Catalogue</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Martin Brylski">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="generator" content="DocPad v6.54.0" />
+    <!--[if IE 7 ]>
+    <link rel="stylesheet" href="css/ink-ie7.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <![endif]-->
+    <link  rel="stylesheet" href="../css/bootstrap.min.css" /><link  rel="stylesheet" href="../css/style.css" /><link  rel="stylesheet" href="../css/highlight.css" /></head>
+<body class="smell">
+
+    <div id="wrap">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                  <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../index.html">Android Smells</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        
+                        <li class="inactive">
+                            <a href="../index.html">Catalogue</a>
+                        </li>
+                        
+                        <li class="inactive">
+                            <a href="../about.html">About</a>
+                        </li>
+                        
+                    </ul>
+
+                    <form class="navbar-form navbar-right" role="search" method="get" action="../search.html">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search" name="keys">
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+
+
+        <div class="container">
+            <h1 class="capitalize">Leaking Thread</h1>
+
+            <h2>Context</h2>
+
+<p>Implementation</p>
+
+<h2>Affects</h2>
+
+<p>Memory Efficiency</p>
+
+<h2>Problem</h2>
+
+<p>In  Java threads are GC roots, that is they are kept in the runtime and does not get collected. So if an Activity starts a thread and does not stop it this is considered a bug. As it can leak memory.</p>
+
+<p>In this example the thread will never be stopped.</p>
+
+<pre><code>public class MainActivity extends Activity {
+
+  private MyThread mThread;
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    doIt();
+  }
+
+  private void doIt() {
+    mThread = new MyThread();
+    mThread.start();
+  }
+
+  private static class MyThread extends Thread {
+
+    @Override
+    public void run() {
+      while (true) {
+        doReallyHeavyStuff();
+      }
+    }
+
+  }
+
+}
+</code></pre>
+
+<p>Threads should only be used for short lived computations. The above mentioned behaviour also applies to AsyncTask.</p>
+
+<h2>Refactorings</h2>
+
+<h3>Introduce Run Check Variable</h3>
+
+<h4>Resolves</h4>
+
+<p>Memory Efficiency</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p>This will introduce a variable to check if the thread operation should still be performed.</p>
+
+<pre><code>public class MainActivity extends Activity {
+  private MyThread mThread;
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    doIt();
+  }
+
+  private void doIt() {
+    mThread = new MyThread();
+    mThread.start();
+  }
+
+  private static class MyThread extends Thread {
+    private boolean mRunning = false;
+
+    @Override
+    public void run() {
+      mRunning = true;
+      while (mRunning) {
+        doReallyHeavyStuff();
+      }
+    }
+
+    public void close() {
+      mRunning = false;
+    }
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    mThread.close();
+  }
+}
+</code></pre>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="http://www.androiddesignpatterns.com/2013/04/activitys-threads-memory-leaks.html">Activitys, Threads, &amp; Memory Efficiency Leaks</a></li>
+</ul>
+
+<h3>Use fragments for configuration change</h3>
+
+<h4>Resolves</h4>
+
+<p>Memory Efficiency</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p>If there is a need to persist data across configuaration changes (due to orientation change, font size change) it is better to use a retained fragment.</p>
+
+<p>This example is taken from the <a href="https://android.googlesource.com/platform/development/+/master/samples/ApiDemos/src/com/example/android/apis/app/FragmentRetainInstance.java">samples demo</a>:</p>
+
+<pre><code>/**
+ * This example shows how you can use a Fragment to easily propagate state
+ * (such as threads) across activity instances when an activity needs to be
+ * restarted due to, for example, a configuration change.  This is a lot
+ * easier than using the raw Activity.onRetainNonConfiguratinInstance() API.
+ */
+public class FragmentRetainInstance extends Activity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // First time init, create the UI.
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction().add(android.R.id.content,
+                    new UiFragment()).commit();
+        }
+    }
+
+    /**
+     * This is a fragment showing UI that will be updated from work done
+     * in the retained fragment.
+     */
+    public static class UiFragment extends Fragment {
+        RetainedFragment mWorkFragment;
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+            View v = inflater.inflate(R.layout.fragment_retain_instance, container, false);
+
+            // Watch for button clicks.
+            Button button = (Button)v.findViewById(R.id.restart);
+            button.setOnClickListener(new OnClickListener() {
+                public void onClick(View v) {
+                    mWorkFragment.restart();
+                }
+            });
+
+            return v;
+        }
+
+        @Override
+        public void onActivityCreated(Bundle savedInstanceState) {
+            super.onActivityCreated(savedInstanceState);
+
+            FragmentManager fm = getFragmentManager();
+
+            // Check to see if we have retained the worker fragment.
+            mWorkFragment = (RetainedFragment)fm.findFragmentByTag(&quot;work&quot;);
+
+            // If not retained (or first time running), we need to create it.
+            if (mWorkFragment == null) {
+                mWorkFragment = new RetainedFragment();
+                // Tell it who it is working with.
+                mWorkFragment.setTargetFragment(this, 0);
+                fm.beginTransaction().add(mWorkFragment, &quot;work&quot;).commit();
+            }
+        }
+
+    }
+
+    /**
+     * This is the Fragment implementation that will be retained across
+     * activity instances.  It represents some ongoing work, here a thread
+     * we have that sits around incrementing a progress indicator.
+     */
+    public static class RetainedFragment extends Fragment {
+        ProgressBar mProgressBar;
+        int mPosition;
+        boolean mReady = false;
+        boolean mQuiting = false;
+
+        /**
+         * This is the thread that will do our work.  It sits in a loop running
+         * the progress up until it has reached the top, then stops and waits.
+         */
+        final Thread mThread = new Thread() {
+            @Override
+            public void run() {
+                // We&#39;ll figure the real value out later.
+                int max = 10000;
+
+                // This thread runs almost forever.
+                while (true) {
+
+                    // Update our shared state with the UI.
+                    synchronized (this) {
+                        // Our thread is stopped if the UI is not ready
+                        // or it has completed its work.
+                        while (!mReady || mPosition &gt;= max) {
+                            if (mQuiting) {
+                                return;
+                            }
+                            try {
+                                wait();
+                            } catch (InterruptedException e) {
+                            }
+                        }
+
+                        // Now update the progress.  Note it is important that
+                        // we touch the progress bar with the lock held, so it
+                        // doesn&#39;t disappear on us.
+                        mPosition++;
+                        max = mProgressBar.getMax();
+                        mProgressBar.setProgress(mPosition);
+                    }
+
+                    // Normally we would be doing some work, but put a kludge
+                    // here to pretend like we are.
+                    synchronized (this) {
+                        try {
+                            wait(50);
+                        } catch (InterruptedException e) {
+                        }
+                    }
+                }
+            }
+        };
+
+        /**
+         * Fragment initialization.  We way we want to be retained and
+         * start our thread.
+         */
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            // Tell the framework to try to keep this fragment around
+            // during a configuration change.
+            setRetainInstance(true);
+
+            // Start up the worker thread.
+            mThread.start();
+        }
+
+        /**
+         * This is called when the Fragment&#39;s Activity is ready to go, after
+         * its content view has been installed; it is called both after
+         * the initial fragment creation and after the fragment is re-attached
+         * to a new activity.
+         */
+        @Override
+        public void onActivityCreated(Bundle savedInstanceState) {
+            super.onActivityCreated(savedInstanceState);
+
+            // Retrieve the progress bar from the target&#39;s view hierarchy.
+            mProgressBar = (ProgressBar)getTargetFragment().getView().findViewById(
+                    R.id.progress_horizontal);
+
+            // We are ready for our thread to go.
+            synchronized (mThread) {
+                mReady = true;
+                mThread.notify();
+            }
+        }
+
+        /**
+         * This is called when the fragment is going away.  It is NOT called
+         * when the fragment is being propagated between activity instances.
+         */
+        @Override
+        public void onDestroy() {
+            // Make the thread go away.
+            synchronized (mThread) {
+                mReady = false;
+                mQuiting = true;
+                mThread.notify();
+            }
+
+            super.onDestroy();
+        }
+
+        /**
+         * This is called right before the fragment is detached from its
+         * current activity instance.
+         */
+        @Override
+        public void onDetach() {
+            // This fragment is being detached from its activity.  We need
+            // to make sure its thread is not going to touch any activity
+            // state after returning from this function.
+            synchronized (mThread) {
+                mProgressBar = null;
+                mReady = false;
+                mThread.notify();
+            }
+
+            super.onDetach();
+        }
+
+        /**
+         * API for our UI to restart the progress thread.
+         */
+        public void restart() {
+            synchronized (mThread) {
+                mPosition = 0;
+                mThread.notify();
+            }
+        }
+    }
+}
+</code></pre>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="http://www.androiddesignpatterns.com/2013/04/retaining-objects-across-config-changes.html">Handling Configuration Changes with Fragments</a></li>
+<li><a href="http://developer.android.com/guide/topics/resources/runtime-changes.html">Handling Runtime Changes</a></li>
+<li><a href="https://android.googlesource.com/platform/development/+/master/samples/ApiDemos/src/com/example/android/apis/app/FragmentRetainInstance.java">samples demo</a></li>
+<li><a href="http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html#config-changes">Handle Configuration Changes | Bitmaps</a></li>
+</ul>
+
+
+            <h2>Related</h2>
+            <ul>
+                
+                <li>
+                    <a href="../smells/leaking_inner_class.html">Leaking Inner Class</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/nested_layout.html">Nested Layout</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/no_low_memory_handler.html">No low memory resolver</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/set_configchanges.html">Set config changes</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/uncached_views.html">Uncached Views</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/unclosed_closable.html">Unclosed closable</a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    <div id="footer">
+      <div class="container">
+        <p class="text-muted credit">by Martin Brylski 2013</p>
+      </div>
+    </div>
+
+    <script defer="defer"  src="../js/jquery.js"></script><script defer="defer"  src="../js/bootstrap.min.js"></script><script defer="defer"  src="../js/holder.js"></script><script defer="defer"  src="../js/html5shiv.js"></script><script defer="defer"  src="../js/prettify.js"></script><script defer="defer"  src="../js/app.js"></script></body>
+</html>

@@ -1,0 +1,36 @@
+<h3>Close Closable</h3>
+
+<h4>Resolves</h4>
+
+<p>Memory Efficiency</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p>The object should be closed properly with</p>
+
+<pre><code>import java.io.Closable
+
+Closable object = ...
+
+// do anything with object
+
+object.close();
+</code></pre>
+
+<h5>Note</h5>
+
+<p>Currently Android only supports Java 6. But if it will support Java 7 one can also use the <code>java.lang.AutoCloseable</code> interface in conjunction with the <em>try-with-ressources</em> statement:</p>
+
+<pre><code>try (AutoCloseable object = ...) {
+   object.doStuff();
+}
+</code></pre>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="http://www.apress.com/9781430239994">Pro Android Apps Efficiency Optimization</a></li>
+<li><a href="http://developer.android.com/reference/java/io/Closeable.html">Developer Documentation</a></li>
+</ul>

@@ -1,0 +1,49 @@
+---
+title: "Durable WakeLock"
+short: dw
+layout: "smell"
+affects:
+    - Energy Efficiency
+context:
+    - Implementation
+    - UI
+refactorings:
+    - aquire_wakelock_with_timeout
+tags:
+    - ui
+    - energy
+    - wakelock
+---
+
+## Context
+
+<%= @document.context %>
+
+## Affects
+
+<%= @document.affects %>
+
+## Problem
+
+A WakeLock is needed to tell the system that the app needs to stay the device on, (to use CPU, Sensors, GPS, Network, etc.). After using the ressources the application should release the WakeLock. If this is not done this will drain the battery.
+
+A WakeLock is aquired by:
+
+```
+PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
+
+PowerManager.WakeLock wl = pm.newWakeLock(
+  PowerManager.SCREEN_DIM_WAKE_LOCK
+  | PowerManager.ON_AFTER_RELEASE,
+  TAG);
+
+wl.acquire();
+// ... do work...
+wl.release();
+```
+
+## Refactorings
+
+<% for refactoring in @getRefactorings(): %>
+<%- @include(refactoring) %>
+<% end %>

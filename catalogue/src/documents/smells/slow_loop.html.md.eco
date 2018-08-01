@@ -1,0 +1,32 @@
+---
+title: "Slow Loop"
+short: sl
+layout: "smell"
+affects:
+    - Efficiency
+context:
+    - Implementation
+refactorings:
+    - enhanced_for_loop
+tags:
+    - idiom
+    - efficiency
+---
+
+## Context
+
+<%= @document.context %>
+
+## Affects
+
+<%= @document.affects %>
+
+## Problem
+
+A slow version of a for-loop is used.
+
+## Refactorings
+
+<% for refactoring in @getRefactorings(): %>
+<%- @include(refactoring) %>
+<% end %>

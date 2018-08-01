@@ -1,0 +1,37 @@
+---
+title: "Use Efficient Data Structure"
+affectsPositive:
+    - Efficiency
+---
+
+### <%= @document.title %>
+
+#### Resolves
+
+<%= @document.affectsPositive %>
+
+#### Affects
+
+<%= @document.affectsNegative %>
+
+#### Solution
+
+Use [SparseArray](http://developer.android.com/reference/android/util/SparseArray.html) instead:
+
+```
+SparseArray<Bitmap> bitmaps = new SparseArray<Bitmap>()
+
+bitmaps.append(i, newBitmap);
+```
+
+See also:
+
+- [SparseLongArray](http://developer.android.com/reference/android/util/SparseLongArray.html)
+- [SparseIntArray](http://developer.android.com/reference/android/util/SparseIntArray.html)
+- [SparseBooleanArray](http://developer.android.com/reference/android/util/SparseBooleanArray.html)
+- [LongSparseArray](http://developer.android.com/reference/android/util/LongSparseArray.html)
+
+#### Links
+
+- [Android Efficiency Tweaking: SparseArray Versus Hashmap](http://www.programmingmobile.com/2012/07/android-Efficiency-tweaking-parsearray.html)
+- [Optimizing Android UI: Pro tips for creating smooth and responsive apps](https://speakerdeck.com/cyrilmottier/optimizing-android-ui-pro-tips-for-creating-smooth-and-responsive-apps)

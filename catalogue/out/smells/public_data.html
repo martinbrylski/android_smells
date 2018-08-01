@@ -1,0 +1,170 @@
+<html>
+<head>
+    <title>Public data | Android Smells Catalogue</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Martin Brylski">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="generator" content="DocPad v6.54.0" />
+    <!--[if IE 7 ]>
+    <link rel="stylesheet" href="css/ink-ie7.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <![endif]-->
+    <link  rel="stylesheet" href="../css/bootstrap.min.css" /><link  rel="stylesheet" href="../css/style.css" /><link  rel="stylesheet" href="../css/highlight.css" /></head>
+<body class="smell">
+
+    <div id="wrap">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                  <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../index.html">Android Smells</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        
+                        <li class="inactive">
+                            <a href="../index.html">Catalogue</a>
+                        </li>
+                        
+                        <li class="inactive">
+                            <a href="../about.html">About</a>
+                        </li>
+                        
+                    </ul>
+
+                    <form class="navbar-form navbar-right" role="search" method="get" action="../search.html">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search" name="keys">
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+
+
+        <div class="container">
+            <h1 class="capitalize">Public data</h1>
+
+            <h2>Context</h2>
+
+<p>Implementation</p>
+
+<h2>Affects</h2>
+
+<p>Security,User Conformity,User Experience</p>
+
+<h2>Problem</h2>
+
+<p>Private data is kept in a store that is publicly accessible (by other applications).</p>
+
+<p>Reading/writing data is usally done by:</p>
+
+<pre><code>Context.openFileOutput(String name, int mode)
+Context.getSharedPreferences(String name, int mode)
+Context.openOrCreateDatabase(String name, int mode, SQLiteDatabase.CursorFactory factory)
+</code></pre>
+
+<p>whereas <code>int mode</code> will refer to:</p>
+
+<ul>
+<li><code>Context.MODE_PRIVATE</code></li>
+<li><code>Context.MODE_WORLD_READABLE</code> <span class="glyphicon glyphicon-arrow-right"></span> Might indicate not-intended public data</li>
+<li><code>Context.MODE_WORLD_WRITEABLE</code> <span class="glyphicon glyphicon-arrow-right"></span> Might indicate not-intended public data</li>
+<li><code>Context.MODE_MULTI_PROCESS</code></li>
+</ul>
+
+<h2>Refactorings</h2>
+
+<h3>Set private mode</h3>
+
+<h4>Resolves</h4>
+
+<p>Security,User Conformity</p>
+
+<h4>Affects</h4>
+
+<h4>Solution</h4>
+
+<p>For private data use the flag <code>Context.MODE_PRIVATE</code>.</p>
+
+<h4>Links</h4>
+
+<ul>
+<li><a href="https://developers.google.com/events/io/2012/sessions/gooio2012/107/">Security and Privacy in Android Apps</a></li>
+<li><a href="http://developer.android.com/reference/android/content/Context.html#MODE_PRIVATE">Developer Documentation</a></li>
+</ul>
+
+
+            <h2>Related</h2>
+            <ul>
+                
+                <li>
+                    <a href="../smells/prohibited_background_data_transfer.html">Prohibited data transfer</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/bulk_data_transfer.html">Bulk data transfer on slow network</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/dropped_data.html">Dropped Data</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/interrupting_from_background.html">Interrupting from background</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/network_io_operations_in_main_thread.html">Network &amp; IO operations in main thread</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/not_descriptive_ui.html">Not descriptive UI</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/debuggable_release.html">Debuggable Release</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/set_configchanges.html">Set config changes</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/tracking_hardwareid.html">Tracking Hardware Id</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/uncontrolled_focus_order.html">Uncontrolled focus order</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/unnecessary_permission.html">Unnecessary permission</a>
+                </li>
+                
+                <li>
+                    <a href="../smells/untouchable.html">Untouchable</a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    <div id="footer">
+      <div class="container">
+        <p class="text-muted credit">by Martin Brylski 2013</p>
+      </div>
+    </div>
+
+    <script defer="defer"  src="../js/jquery.js"></script><script defer="defer"  src="../js/bootstrap.min.js"></script><script defer="defer"  src="../js/holder.js"></script><script defer="defer"  src="../js/html5shiv.js"></script><script defer="defer"  src="../js/prettify.js"></script><script defer="defer"  src="../js/app.js"></script></body>
+</html>
